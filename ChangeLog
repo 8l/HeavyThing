@@ -1,0 +1,421 @@
+February 1st, 2016: v1.16
+	tui_text.inc:
+	sshtalk:
+		Fixed a bug introduced in 1.13 that caused sshtalk to crash.
+	* version update to v1.16
+January 27th, 2016: v1.15
+	ht.inc:
+		Added include line for curve25519.inc, ed25519.inc, sha3.inc,
+		poly1305.inc, sodium_compat.inc
+	curve25519.inc:
+		Added Curve25519 support/ECDH routines.
+	ed25519.inc:
+		Added Ed25519 support/ECDSA routines.
+	poly1305.inc:
+		Added Poly1305 support/MAC routines.
+	sodium_compat.inc:
+		Added NaCl/libsodium's crypto_box_easy and crypto_box_open_easy
+	sha3.inc:
+		Added SHA3-{224,256,384,512}/Keccak
+	hmac.inc:
+		Added SHA3-{224,256,384,512} support to HMAC.
+	rwasa/arguments.inc:
+		Restored -cachecontrol 0 functionality.
+	* update copyright years.
+September 30th, 2015: v1.14
+	-- minor update, been busy with client work of late. Look for
+	   a more significant update next month.
+	ht.inc:
+		Fixed bug in environment parsing (chopped strings).
+	buffer.inc:
+		Fixed bug in has_more_lines
+		Fixed bug in consume for 0 byte calls.
+	mimelike.inc:
+		Added several case-insensitive convenience functions,
+		and did some fixups for common "in-the-wild" issues
+		involving decoding web responses.
+	webclient.inc:
+		Fixed a buffer drain issue on follow-redirects.
+		Fixed differing host follow-redirects.
+	assemble_all.sh:
+		Added script to compile everything in the release.
+	README:
+		Added reference to assemble_all.sh
+July 16th, 2015: v1.13
+	-- minor update + addition of hnwatch, all other binaries
+	   remained at 1.12.
+	webclient.inc:
+		Fixed a keepalive requeueing issue.
+	ht_defaults.inc:
+		Changed default webclients maximum from 6 to 4.
+	tui_gridguts.inc:
+		Fixed a bug in ownership data destroy on reset
+	json.inc:
+		Fixed memory leak in parse_object when no object name
+		was present.
+	tui_text.inc:
+		Fixed bug for dynamic-sized initialtext + heightlock.
+	heap.inc:
+		Redid init to include an attempt for 2GB (fix from 1.12)
+	hnwatch/hnwatch.asm:
+	hnwatch/hnmodel.inc:
+	hnwatch/textify.inc:
+	hnwatch/ui.inc:
+		TUI HackerNews API real-time watch/reader beta.
+July 7th, 2015: v1.12
+	privmapped.inc:
+		Fixed an issue with 0-byte files, 0 st_size to mmap ==
+		invalid argument.
+	mapped.inc:
+		Removed unnecessary ftruncate calls for anonymous maps
+	heap.inc:
+		Changed initial default heap maximum to 16GB
+	ht.inc:
+		Added ht$init_args to initialize the library without a
+		known startup stackframe.
+		Added ht$syscall as a convenience wrapper for HLL
+		syscall entries.
+	syslog.inc:
+		Added check to see whether argv really exists or not
+		(related to the aforementioned ht$init_args)
+	string32.inc:
+	string16.inc:
+		Added string$from_cstr to construct strings without the
+		need to call strlen_latin1 followed by string$from_utf8
+	epoll.inc:
+		Added public declaration for epoll$run if not profiling
+		the epoll layer itself.
+	memfuncs.inc:
+		Added return value = destination so it is libc compat.
+	io.inc:
+		Added convenience function io$link to link parent/child.
+	epoll.inc:
+		Added public symbol def for epoll$default_vtable to make
+		linking with HLL possible.
+	ssh.inc:
+		Added convenience function ssh$set_authcb to make it
+		easy to set the authentication callback from an HLL.
+	examples/hello_world_c1
+		Added example C binding for include_everything
+	examples/hello_world_c2
+		Same C example as c1 but without include_everything
+	examples/simplechat_c++
+		Mix of libstdc++ and HeavyThing example, simple telnet
+		chat server.
+	examples/simplechat_ssh_c++
+		Same example as above only as an ssh server.
+	examples/simplechat_ssh_auth_c++
+		Same example as above but adds authentication to the mix.
+June 12th, 2015: v1.11
+	epoll.inc/rwasa/webslap:
+		Fixed an interesting and fun logic error when dealing with
+		EPOLLHUP|EPOLLIN combined. In surprisingly rare events, it
+		turns out that it is possible to receive both in one fell-
+		swoop, and with extremely high speed FastCGI handlers,
+		even likely! Thanks to Petar Koretić for reporting this!
+	examples/multicore_echo:
+		Added another example of multiple process based TCP server.
+
+May 28th, 2015: v1.10
+	Been very busy doing client work, this release is mainly all about
+	dhtool. Thanks to everyone for continued feedback, support, and
+	constructive criticism.
+
+	dhtool/dhtool.asm:
+	dhtool/dhtool_settings.inc:
+		Release dhtool Diffie-Hellman parameter generator/verifier
+	webserver.inc:
+		Fix bug in webserver$clone for custom vtable (wasn't getting
+		copied in the newly cloned version).
+	formatter.inc:
+		Fix small memory leak in formatter$destroy
+	http1.inc:
+		Incomplete initial version of httpheaders-based HTTP/1
+		Handler.
+	httpheaders.inc:
+		Modified to include standalone init/cleanup
+
+March 26th, 2015: v1.09
+	toplip/toplip.asm:
+		Released toplip encryption utility.
+	httpheaders.inc:
+		Added support for HPACK, and UTF-conversion-free HTTP/{1,2}
+		header handling (much faster than mimelike). (prep for HTTP2)
+	ht.inc:
+		Updated to include httpheaders.inc
+	memfuncs.inc:
+		Added memcpy_inline macro
+	bigint.inc:
+		Reworked symmetric word multiplies for a bit more speed
+		(~5% improvement for smaller, less so for bigger)
+	ht.inc:
+	ht_defaults.inc:
+	ht_data.inc:
+		Added support for code preloading at init time and enabled by
+		default.
+	ht_defaults.inc:
+		Added setting for rng_paranoid.
+
+		Added config option to use movbe instead of bswap + separate
+		mov instructions for Haswell or better CPUs, default=disabled.
+	buffer.inc:
+		Fixed bug in append_base64tobin_latin1
+	aes.inc:
+	bigint.inc:
+	httpheaders.inc:
+	md5.inc:
+	pbkdf2.inc:
+	png.inc:
+	sha1.inc:
+	sha2.inc:
+	ssh.inc:
+	tls.inc:
+	X509.inc:
+		Added use_movbe functionality (if you have Haswell or better,
+		you should enable this).
+	scrypt.inc:
+		Added scrypt_iter to optionally specify a different PBKDF2
+		iteration count other than the default of 1 specified by the
+		scrypt spec.
+	htcrypt.inc:
+		Added 16 bytes for user variables (useful for holding a tweak
+		for htxts), and a variable to hold the first unused index.
+
+		Added notes atop re: cascaded AES256 and AES256 key grinding.
+
+		Added option to disable cascaded AES256 by setting x=255.
+
+		Added debug option to dump keys and sequence to stderr.
+	htxts.inc:
+		Modified to use htcrypt's x variable as the tweak encryption
+		index rather than [0].
+
+		Modified to treat x=255 separately for "vanilla" XTS-AES.
+	list.inc:
+		Added list$reverse_foreach_arg.
+	rng.inc:
+		Added support for rng_paranoid, which pulls from /dev/random
+		instead of /dev/urandom at init.
+
+		Modified rng$block to throw away 64 bits for every 3072 bits
+		generated (to prevent a complete subsequence from being
+		output by the function). This slowed down the function a bit
+		but the end result is worth the penalty.
+
+February 17th, 2015: v1.08
+	ht_defaults.inc:
+		Removed string_direct option
+
+		Enabled epoll_multiple_accept by default
+
+		Added more descriptive about dh_privatekey_size
+	string{16,32}.inc:
+		Fixed another typo from 1.05, removed memcmp option
+	maps.inc:
+		Modified stringmap$insert_unique for less branching
+	heap.inc:
+		Typo in alloc_random.
+	tls.inc:
+		Client request to reduce the size of the session cache,
+		was at ~256 bytes or so, now at 128 bytes per entry.
+
+		Modified instruction order in tls$encrypt
+	
+		Modified handshake to not send ChangeCipherSpec separately
+		in server mode (only when TCP_NODELAY is set)
+	sha1.inc:
+		Changed bswap order on transform entry
+	rwasa/worker.inc:
+		Eliminated TLS session cache hook when cpucount is one.
+February 13th, 2015: v1.07:
+	ht_defaults.inc:
+		Added tls_server_rsa_blinding option, because as it turns out
+		OpenSSL does not have it enabled by default. Enabling it in
+		this library causes the expected overhead of blinding.
+	X509.inc:
+		Fixed memory leak in X509cert cleanup.
+
+		Added support for PKCS9 object ids in certificates.
+
+		Added fixed monty objects for **dmodq/p mod q/p
+
+		Added extra bigints for rsaprivate operations
+	tls.inc:
+		Added handshake message type to tlsdebug output.
+
+		Added conditional sections for tls_server_rsa_blinding option
+		as mentioned above.
+	bigint.inc:
+		Added call to tlz for new_encoded (RSA private keys were
+		being decoded with incorrect sizes resulting in all calcs
+		being done with double the integer sizes for no reason).
+
+		Added rsaprivate function
+	ssh.inc:
+		Removed unnecessary calls to tlz
+
+February 11th, 2015: v1.06:
+	The update for today as-planned, 1.05 was a critical-update.
+	url.inc:
+		Replaced unnecessary to_lower copies with inplace version.
+
+		Placed conditional for string$replace of //
+	privmapped.inc:
+		Fixed typo for privmapped$new introduced in 1.05
+
+		Added an extra user variable.
+	webserver.inc:
+		Removed lazy calls to string$charat
+
+		Moved webservercfg$mimetype calls from every response to hotlist
+
+		Made Accept-Ranges header addition conditional (only sends it if
+		the size of the resource is >512kb).
+	tui_matrix.inc:
+		Fixed the background colour for drawing. Thanks to Bart Grantham
+		for reporting this.
+	buffer.inc:
+		Reverted part of buffer$reset_reserve from 1.05, wow, these 
+		13 hour days are starting to take their toll, maybe time to take 
+		a break.
+
+February 11th, 2015: v1.05
+	-- critical fix for small memory footprint machines:
+	heap.inc:
+		As it turns out, the mmap syscall when run with no VM/swap for the
+		heap$init function does not return -1 on error, modified heap$init
+		to be happier in memory-constrained devices. we require a successful
+		call to mmap for 256MB of memory, then remap it back to the minimum
+		so that it doesn't get relocated on us during normal operation.
+
+	buffer.inc:
+		Added buffer$reset_reserve
+	
+		Added buffer$append_rawstring_noreserve
+
+		Updated buffer$append
+
+	mimelike.inc:
+		Modified setheader functions to avoid unnecessary find then inserts.
+
+		Modified compose to deal with header construction a bit better, and
+		eliminted redundant header composition
+	maps.inc:
+		Modified stringmap$erase to return (nonstandard/non-ABI compliant)
+		rdx == topmost key, r8 == topmost value
+	ht_defaults.inc:
+		Added string_direct_compare option
+	string{16,32}.inc:
+		Added direct comparison and optioned memcmp{16,32} for string$compare
+	url.inc:
+		Messed with the flow in url$new
+
+February 9th, 2015: v1.04
+	WOW, due to all of the amazing and positive community feedback I have received
+	I am proud to announce some pretty hefty changes I have been busy with through
+	the entire day. Results include a near 20% speed boost for rwasa, hahaha, and
+	it was already fast. Please keep the feedback coming! I can't fix things or
+	make them faster without a comparative baseline.
+
+	ht_defaults.inc:
+		Added an option for whether to formatter$add_datetime does fractional
+		sections or not (avoids string$from_double)
+	webserver.inc:
+		Eliminated unnecessary query string goods fixed by the change in 1.02.
+
+		Replaced lazy string$split of request preface.
+	
+		Replaced many mimelike$setheaders with mimelike$addheader where we knew
+		that the header did not previously exist (speed improvement).
+
+		Moved the Last-Modified formatter to a static part of privmapped to
+		avoid having to constantly turn the st_mtime into string format for
+		static files.
+
+		If no logging is configured, webserver$log doesn't bother with the
+		logformat anymore. (Much to my surprise, a fair few people run their
+		webserver logless -- e.g. where they point it to some backpath)
+	webclient.inc:
+		Replaced many mimelike$setheaders with mimelike$addheader where we knew
+		that the header did not previously exist (speed improvement).
+	fcgiclient.inc:
+		Also eliminated unnecessary query string goods fixed by 1.02.
+	epoll.inc:
+		Cleaned up epoll$send, no functional differences.
+	tls.inc:
+		modified stack alignment for keycalc spots
+	buffer.inc:
+		modified buffer$append_string to avoid two passes over the input string
+		for UTF8 conversion (speed increase at the expense of possible unnecessary
+		buffer space)
+	formatter.inc:
+		Added support for the new config option formatter_datetime_fractional
+		which is disabled by default (speed improvement).
+
+		fixed a typo for 16 bit strings and a fasm label
+	url.inc:
+		fixed a typo for 16 bit strings and a size prefix
+	mimelike.inc:
+		Added mimelike$addheader_* variants (speed improvement when you know the
+		header does not already exist)
+	privmapped.inc:
+		Added webserver-dependent mtimestr. (See comments above re: webserver.inc)
+	webslap/worker.inc:
+		For very high requests/sec, modified the parent process notifier to use
+		a timer instead of sending atomically one at a time via the socketpair.
+
+		Added profiling support similar to rwasa, requires -noui and -cpu 1
+	webslap/master.inc:
+		Modified to accommodate the aforementioned mod for worker.inc
+	webslap/master_ui.inc:
+		Updated version to 1.04
+	webslap/webslap.asm:
+		Updated version to 1.04
+	rwasa/master.inc:
+		Updated version to 1.04
+	
+
+February 8th, 2015: v1.03
+	webslap/webslap_tlsmin:
+		No sooner did 1.02 release come out, than a request arrived for a webslap
+		version with tls_minimalist enabled, added.
+	
+
+February 8th, 2015: v1.02
+	ht_defaults.inc:
+		modified default of dh_bits from 4096 to 2048, as many people have pointed
+		out that our default 4kbit is not common and should not be the default.
+		modified default of dh_privatekey_size from 512 to 256 re: same.
+	
+		Added setting for tls_minimalist which disables all but non-DHE AES128-CBC
+		with SHA1. Many production environments do not care about security, so we
+		added this option to do the bare essentials.
+
+	tls.inc:
+		Added the compile-time conditionals to support the aforementioned
+		tls_minimalist setting.
+
+	webserver.inc:
+	mimelike.inc:
+	rwasa/arguments.inc:
+		Client request for -backpath option, aka "upstream" handling, feature added.
+		Note: Host header is not modified when passed to the backpath, X-Forwarded-*
+		headers are added.
+	rwasa/master.inc:
+		Changed banner from 1.0 to 1.02
+
+	rwasa/rwasa_tlsmin:
+		Added a custom compiled binary for the tls_minimalist setting and a README
+		re: same.
+
+	url.inc:
+		Fixed issue with query string encoding/decoding (affected webslap too)
+		Thanks to Domingo Alvarez Duarte for finding this.
+
+February 4th, 2015: v1.01 quick bugfix update
+	rwasa/worker.inc:
+		Deployment for initial release missed the correct version
+	tls.inc:
+		Fixed race condition for very-long-lived single TLS session in the cache
+
+January 28th, 2015: Initial release

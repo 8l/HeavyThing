@@ -1,0 +1,6 @@
+rwasa_tlsmin:
+
+	After much feedback about our choices for TLS being so security-minded,
+	this version is compiled with no DHE support, and only the bare minimum
+	AES128 TLS, as is deployed in many TLS-enabled but not security-critical
+	environments to better reflect choices in the industry.
